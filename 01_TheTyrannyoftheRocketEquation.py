@@ -7,8 +7,10 @@ PART 1:
 with open("data/01_input", "r") as f:
     masses = [line for line in f]
 
+
 def divideRoundDownAndSub(number):
-    return math.floor(float(number)/float(3))-2
+    return math.floor(float(number) / float(3)) - 2
+
 
 assert divideRoundDownAndSub(12) == 2
 assert divideRoundDownAndSub(14) == 2
@@ -24,11 +26,14 @@ print(sum)
 """
 PART 2:
 """
+
+
 def calculateFuelForFuelRecursive(number):
     newnumber = divideRoundDownAndSub(number)
     if newnumber <= 0:
         return 0
     return newnumber + calculateFuelForFuelRecursive(newnumber)
+
 
 assert calculateFuelForFuelRecursive(100756) == 50346
 
