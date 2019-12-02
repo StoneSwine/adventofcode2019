@@ -24,7 +24,6 @@ print(sum)
 """
 PART 2:
 """
-
 def calculateFuelForFuelRecursive(number):
     newnumber = divideRoundDownAndSub(number)
     if newnumber <= 0:
