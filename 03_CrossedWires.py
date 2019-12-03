@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 import csv
-import re
 
 from shapely.geometry import LineString
 
 """
+This whole thing is a stupid and slow solution.. 
+    TODO: Use more time to plan before coding
+    
 PART 1
 """
 
+
 # Read the strings from file
-def readWiresFromFile():
+def read_wires_from_file():
     wires = []
     with open("data/03_input", "r") as f:
         reader = csv.reader(f, delimiter=',')
@@ -17,15 +20,16 @@ def readWiresFromFile():
             wires.append(row)
     return wires
 
+
 # Create coordinates from the strings read from the file (a line at a time)
-def createCoordinatesFromWires(wire):
-    regexnumbersfromletters = re.compile("([a-zA-Z]+)([0-9]+)")
+def create_coordinates_from_wires(wire):
     tmpcords = []
     lat = 0  # U / D
     long = 0  # L / R
     tmpcords.append((lat, long))  # start
     for i in wire:
-        direction, distance = regexnumbersfromletters.match(i).groups()
+        direction = i[0]
+        distance = i[1:]
         if direction == "R":
             long += int(distance)
         elif direction == "L":
@@ -37,44 +41,44 @@ def createCoordinatesFromWires(wire):
         tmpcords.append((lat, long))
     return tmpcords
 
+
 # Return the manhattan distance between two coordinates
-def getManhattan(xList, yList):
+def get_manhattan(xList, yList):
     return abs(xList[0] - yList[0]) + abs(xList[1] - yList[1])
 
+
 # return all of the intersections made by the two wires + the coordinates of the wires
-def getInterSections(twowires):
+def get_intersections(twowires):
     wirecoordinates = []
     for i in twowires:
-        wirecoordinates.append(createCoordinatesFromWires(i))
+        wirecoordinates.append(create_coordinates_from_wires(i))
 
     firstwire = LineString(wirecoordinates[0])
     secondwire = LineString(wirecoordinates[1])
     return firstwire.intersection(secondwire), wirecoordinates
 
+
 # get The closest manhattandistance from two wire-systems
-def getClosestManhattanDistance(twowires):
-    intersections, tmp = getInterSections(twowires)
+def get_closest_manhattan_distance(twowires):
+    intersections, tmp = get_intersections(twowires)
 
     manhattansum = []
     for point in intersections:
-        manhattansum.append(getManhattan([0, 0], [int(point.x), int(point.y)]))
+        manhattansum.append(get_manhattan([0, 0], [int(point.x), int(point.y)]))
     manhattansum.sort()
     return manhattansum[1]
 
-assert getClosestManhattanDistance([['R8', 'U5', 'L5', 'D3'], ['U7', 'R6', 'D4', 'L4']]) == 6
-assert getClosestManhattanDistance([['R98', 'U47', 'R26', 'D63', 'R33', 'U87', 'L62', 'D20', 'R33', 'U53', 'R51'],
-                                    ['U98', 'R91', 'D20', 'R16', 'D67', 'R40', 'U7', 'R15', 'U6', 'R7']]) == 135
-assert getClosestManhattanDistance([['R75', 'D30', 'R83', 'U83', 'L12', 'D49', 'R71', 'U7', 'L72'],
-                                    ["U62", "R66", 'U55', 'R34', 'D71', 'R55', 'D58', 'R83']]) == 159
 
-print(getClosestManhattanDistance(readWiresFromFile()))
+print(get_closest_manhattan_distance(read_wires_from_file()))
 
 """
 PART 2
 """
+
+
 # returns the lowest distance to one of the intersections on the two wires
-def getClosestIntersectionFromStartpoint(twowires):
-    intersections, wirecoordinates = getInterSections(twowires)
+def get_closest_intersection_from_startpoint(twowires):
+    intersections, wirecoordinates = get_intersections(twowires)
     distanceToIntersections = []
     for i in intersections:
         firstwirelength = LineString(wirecoordinates[0]).project(i)
@@ -83,5 +87,5 @@ def getClosestIntersectionFromStartpoint(twowires):
     distanceToIntersections.sort()
     return distanceToIntersections[1]
 
-print(int(getClosestIntersectionFromStartpoint(readWiresFromFile())))
 
+print(int(get_closest_intersection_from_startpoint(read_wires_from_file())))

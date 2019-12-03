@@ -5,13 +5,13 @@ PART 1
 """
 
 
-def readNumbersIntoArray():
+def read_numbers_into_array():
     with open("data/02_input", "r") as f:
         intcode = [int(x) for x in f.readline().split(',')]
     return intcode
 
 
-def parseIntcode(intcode):
+def parse_intcode(intcode):
     for i in range(0, len(intcode), 4):
         if intcode[i] == 1:
             intcode[intcode[i + 3]] = intcode[intcode[i + 1]] + intcode[intcode[i + 2]]
@@ -24,20 +24,20 @@ def parseIntcode(intcode):
     return intcode
 
 
-def alertWithValues(noun, verb):
-    intcode = readNumbersIntoArray()
+def alert_with_values(noun, verb):
+    intcode = read_numbers_into_array()
     intcode[1] = noun
     intcode[2] = verb
-    return parseIntcode(intcode)[0]
+    return parse_intcode(intcode)[0]
 
 
-print(alertWithValues(12, 2))
+print(alert_with_values(12, 2))
 
 """
 PART 2
 """
 for i in range(0, 99):
     for j in range(0, 99):
-        if alertWithValues(i, j) == 19690720:
+        if alert_with_values(i, j) == 19690720:
             print(str(100 * i + j))
             break
