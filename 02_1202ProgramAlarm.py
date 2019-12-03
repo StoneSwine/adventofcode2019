@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import csv
-
 """
 PART 1
 """
