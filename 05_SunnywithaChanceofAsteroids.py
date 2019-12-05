@@ -43,16 +43,10 @@ def run(input):
             else:
                 pos += 3
         elif opc == 7:
-            if get_value(ico, p1, m1) < get_value(ico, p2, m2):
-                ico[p3] = 1
-            else:
-                ico[p3] = 0
+            ico[p3] = (1 if get_value(ico, p1, m1) < get_value(ico, p2, m2) else 0)
             pos += 4
         elif opc == 8:
-            if get_value(ico, p1, m1) == get_value(ico, p2, m2):
-                ico[p3] = 1
-            else:
-                ico[p3] = 0
+            ico[p3] = (1 if get_value(ico, p1, m1) == get_value(ico, p2, m2) else 0)
             pos += 4
         elif fullopc == 99:
             return
